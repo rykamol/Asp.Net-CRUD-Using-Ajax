@@ -1,0 +1,4 @@
+packages/
+EmployeeManagement/bin/
+EmployeeManagement/obj/
+.vs/

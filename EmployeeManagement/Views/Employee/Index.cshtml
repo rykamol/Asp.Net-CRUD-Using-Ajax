@@ -1,0 +1,382 @@
+﻿@model EmployeeManagement.Models.ViewModels.EmployeeIndexViewModel
+
+@*<link href="~/Content/PagedList.css" rel="stylesheet" />*@
+@{
+    ViewBag.Title = "Index";
+}
+<h2 class="text-center">Employee List</h2>
+
+<button id="createNew" type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+    Create New
+</button>
+
+@using (Html.BeginForm())
+{
+    <p style="float: right">
+        Search Name: @Html.TextBox("searchData", ViewBag.FilterValue as string)
+        <input class="btn btn-success" type="submit" value="Filter" />
+    </p>
+}
+<table class="table table-bordered table-hover table-striped">
+    <thead>
+        <tr>
+            <th>
+                FirstName
+            </th>
+            <th>
+                LastName
+            </th>
+            <th>
+                Designation
+            </th>
+            <th>
+                JoinDate
+            </th>
+            <th>
+                CurrentSalary
+            </th>
+            <th>
+                Department
+            </th>
+            <th>
+                NextReviewDate
+            </th>
+            <th>
+                DateOfBirth
+            </th>
+            <th>
+                Gender
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody id="empTable"></tbody>
+</table>
+<br />
+
+
+
+@*Modal*@
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title text-center" id="exampleModalLabel">Add New Employee</h2>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-horizontal text-center">
+                    
+                    <input type="number" hidden="" id="Id" name="Id" value=""/>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.FirstName, htmlAttributes: new {@class = "control-label col-md-3"})
+                        <div class="col-md-8">
+                            @Html.EditorFor(model => model.FirstName, new {htmlAttributes = new {@class = "form-control"}})
+                            @Html.ValidationMessageFor(model => model.FirstName, "", new {@class = "text-danger"})
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.LastName, htmlAttributes: new {@class = "control-label col-md-3"})
+                        <div class="col-md-8">
+                            @Html.EditorFor(model => model.LastName, new {htmlAttributes = new {@class = "form-control"}})
+                            @Html.ValidationMessageFor(model => model.LastName, "", new {@class = "text-danger"})
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Designation, htmlAttributes: new {@class = "control-label col-md-3"})
+                        <div class="col-md-8">
+                            @Html.EditorFor(model => model.Designation, new {htmlAttributes = new {@class = "form-control"}})
+                            @Html.ValidationMessageFor(model => model.Designation, "", new {@class = "text-danger"})
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.JoinDate, htmlAttributes: new {@class = "control-label col-md-3"})
+                        <div class="col-md-8">
+                            @Html.EditorFor(model => model.JoinDate, new {htmlAttributes = new {@class = "form-control", @type = "date"}})
+                            @Html.ValidationMessageFor(model => model.JoinDate, "", new {@class = "text-danger"})
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.CurrentSalary, htmlAttributes: new {@class = "control-label col-md-3"})
+                        <div class="col-md-8">
+                            @Html.EditorFor(model => model.CurrentSalary, new {htmlAttributes = new {@class = "form-control"}})
+                            @Html.ValidationMessageFor(model => model.CurrentSalary, "", new {@class = "text-danger"})
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Department, htmlAttributes: new {@class = "control-label col-md-3"})
+                        <div class="col-md-8">
+                            @Html.EditorFor(model => model.Department, new {htmlAttributes = new {@class = "form-control"}})
+                            @Html.ValidationMessageFor(model => model.Department, "", new {@class = "text-danger"})
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.NextReviewDate, htmlAttributes: new {@class = "control-label col-md-3"})
+                        <div class="col-md-8">
+                            @Html.EditorFor(model => model.NextReviewDate, new {htmlAttributes = new {@class = "form-control", @type = "date"}})
+                            @Html.ValidationMessageFor(model => model.NextReviewDate, "", new {@class = "text-danger"})
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.DateOfBirth, htmlAttributes: new {@class = "control-label col-md-3"})
+                        <div class="col-md-8">
+                            @Html.EditorFor(model => model.DateOfBirth, new {htmlAttributes = new {@class = "form-control", @type = "date"}})
+                            @Html.ValidationMessageFor(model => model.DateOfBirth, "", new {@class = "text-danger"})
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Gender, htmlAttributes: new {@class = "control-label col-md-3"})
+                        <div class="col-md-8">
+                            @Html.EditorFor(model => model.Gender, new {htmlAttributes = new {@class = "form-control"}})
+                            @Html.ValidationMessageFor(model => model.Gender, "", new {@class = "text-danger"})
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" id="addButton" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*end modal*@
+@*Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+@Html.PagedListPager(Model, pageNo =>Url.Action("Index", new { pageNo, Filter_Value = ViewBag.FilterValue }))*@
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    
+    <script type="text/javascript">
+
+        function GetAllEmloyee() {
+
+            $.ajax({
+                url: "/Employee/AllEmployee",
+                type: "GET",
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                success: function(result) {
+                    var strTable = CreateTable(result.Employees);
+                    $("#empTable").empty();
+                    $("#empTable").append(strTable);
+                },
+                error: function(errormessage) {
+                    alert(errormessage.responseText);
+                }
+            });
+        }
+
+        function RefreshForm() {
+            $('#FirstName').val("");
+            $('#LastName').val("");
+            $('#Designation').val("");
+            $('#JoinDate').val("");
+            $('#CurrentSalary').val("");
+            $('#Department').val("");
+            $('#NextReviewDate').val("");
+            $('#DateOfBirth').val("");
+            $('#Gender').val("");
+        }
+
+        function Create() {
+            var empObj = {
+                FirstName: $('#FirstName').val(),
+                LastName: $('#LastName').val(),
+                Designation: $('#Designation').val(),
+                JoinDate: $('#JoinDate').val(),
+                CurrentSalary: $('#CurrentSalary').val(),
+                Department: $('#Department').val(),
+                NextReviewDate: $('#NextReviewDate').val(),
+                DateOfBirth: $('#DateOfBirth').val(),
+                Gender: $('#Gender').val()
+            };
+
+            $.ajax({
+                url: "/Employee/Create",
+                data: JSON.stringify(empObj),
+                type: "POST",
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                success: function (result) {
+                    if (result.status === "Success") {
+
+                        GetAllEmloyee();
+                        RefreshForm();
+                    }
+                },
+                error: function (errormessage) {
+                    alert(errormessage.statusText);
+                }
+            });
+        }
+
+        function GetEmployee(id) {
+            $.ajax({
+                url: "/Employee/EditEmployee/" + id,
+                type: "GET",
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                success: function (result) {
+                    $('#Id').val(result.employee.Id);
+                    $('#FirstName').val(result.employee.FirstName);
+                    $('#LastName').val(result.employee.LastName);
+                    $('#Designation').val(result.employee.Designation);
+                    $('#JoinDate').val(CustomDateForEdit(Date(result.employee.JoinDate)));
+                    $('#CurrentSalary').val(result.employee.CurrentSalary);
+                    $('#Department').val(result.employee.Department);
+                    $('#NextReviewDate').val(CustomDateForEdit(Date(result.employee.NextReviewDate)));
+                    $('#DateOfBirth').val(CustomDateForEdit(Date(result.employee.DateOfBirth)));
+                    $('#Gender').val(result.employee.Gender);
+                },
+                error: function (errormessage) {
+                    alert(errormessage.responseText);
+                }
+            });
+        }
+
+        function Update() {
+
+            var empObj = {
+                Id: $('#Id').val(),
+                FirstName: $('#FirstName').val(),
+                LastName: $('#LastName').val(),
+                Designation: $('#Designation').val(),
+                JoinDate: $('#JoinDate').val(),
+                CurrentSalary: $('#CurrentSalary').val(),
+                Department: $('#Department').val(),
+                NextReviewDate: $('#NextReviewDate').val(),
+                DateOfBirth: $('#DateOfBirth').val(),
+                Gender: $('#Gender').val()
+            };
+
+            $.ajax({
+                url: "/Employee/Edit",
+                data: JSON.stringify(empObj),
+                type: "POST",
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                success: function (result) {
+                    if (result.status === "Success") {
+
+                        GetAllEmloyee();
+                        RefreshForm();
+                        $('#exampleModal').modal('toggle');                     
+                    }
+                },
+                error: function (errormessage) {
+                    alert(errormessage.statusText);
+                }
+            });
+        }
+
+        function CreateOrUpdate() {
+            var id = $('#Id').val();
+            if (id === undefined || id === "") {
+                Create();
+            }
+            else {
+                Update();
+            }
+        }
+
+        function Delete(id) {
+            if (confirm("Are you sure you want to delete the record?")) {
+                $.ajax({
+                    url: "/Employee/Delete",
+                    data: JSON.stringify({ id: id }),
+                    type: "POST",
+                    contentType: "application/json;charset=utf-8",
+                    dataType: "json",
+                    success: function(result) {
+                        GetAllEmloyee();
+                    },
+                    error: function(errormessage) {
+                        alert(errormessage.responseText);
+                    }
+                });
+            }
+        }
+
+        function CreateTable(arr) {
+            var strTable = "";
+            for (var i = 0; i < arr.length; i++) {
+                var strVar = "";
+                strVar += "<tr>";
+                strVar += " <td>";
+                strVar += "" + arr[i].FirstName + "";
+                strVar += "</td>";
+                strVar += "<td>";
+                strVar += " " + arr[i].LastName + "";
+                strVar += "</td>";
+                strVar += "<td>";
+                strVar += "" + arr[i].Designation + "";
+                strVar += "</td>";
+                strVar += "<td>";
+                strVar += "" + CustomDate(Date(arr[i].JoinDate)) + "";
+                strVar += "</td>";
+                strVar += "<td>";
+                strVar += "" + arr[i].CurrentSalary + "";
+                strVar += "</td>";
+                strVar += "<td>";
+                strVar += "" + arr[i].Department + "";
+                strVar += "</td>";
+                strVar += "<td>";
+                strVar += "" + CustomDate(Date(arr[i].NextReviewDate)) + "";
+                strVar += "</td>";
+                strVar += "<td>";
+                strVar += "" + CustomDate(Date(arr[i].DateOfBirth)) + "";
+                strVar += "</td>";
+                strVar += "<td>";
+                strVar += "" + arr[i].Gender + "";
+                strVar += "</td>";
+                strVar += "<td>";
+                strVar += "<a data-toggle='modal' data-target='#exampleModal' class='btn btn-primary' onclick=GetEmployee(" + arr[i].Id +")>Edit</a> |";
+                strVar += "<a  class='btn btn-info' href='/Employee/Details/" + arr[i].Id + "'>Details</a> |";
+                strVar += "<button class='btn btn-danger' onclick='Delete(" + arr[i].Id + ")'>Delete</button>";
+                strVar += "</td>";
+                strTable += "</tr>";
+                strTable += strVar;
+            }
+            return strTable;
+        }
+
+        function CustomDate(value) {
+            var date = new Date(value);
+            return date.getDate() + "/" + date.getMonth() + "/" + date.getFullYear();
+        }
+
+        function CustomDateForEdit(value) {
+            var date = new Date(value);
+            var day = ("0" + date.getDate()).slice(-2);
+            var month = ("0" + (date.getMonth() + 1)).slice(-2);
+            return date.getFullYear()+"-"+(month)+"-"+(day) ;
+        }
+
+        $(document).ready(function() {
+
+            GetAllEmloyee();
+
+            $("#addButton").click(function() {
+                CreateOrUpdate();
+            });
+
+            $("#createNew").click(function() {
+                RefreshForm();
+            });
+        });
+
+    </script>
+}
