@@ -1,6 +1,7 @@
 ﻿using EmployeeManagement.Context;
 using EmployeeManagement.Models.ViewModels;
 using System;
+using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
@@ -228,7 +229,7 @@ namespace EmployeeManagement.Controllers
             }
             else
             {
-                status = "Eployee Not Found";
+                status = "Employee Not Found";
             }
 
             return Json(new
